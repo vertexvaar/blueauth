@@ -12,6 +12,7 @@ use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 use VerteXVaaR\BlueSprints\Mvc\Repository;
+use VerteXVaaR\BlueSprints\Routing\Attrbiutes\Route;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
 use function array_key_exists;
@@ -36,11 +37,13 @@ class AuthenticationController extends AbstractController
         parent::__construct($repository, $view);
     }
 
+    #[Route(path: '/login')]
     public function login(ServerRequestInterface $request): ResponseInterface
     {
         return $this->render('@vertexvaar_blueauth/login.html.twig');
     }
 
+    #[Route(path: '/logout')]
     public function logout(ServerRequestInterface $request): ResponseInterface
     {
         $sessionIdentifier = $request->getAttribute('session');
@@ -54,6 +57,7 @@ class AuthenticationController extends AbstractController
         return $this->redirect('/');
     }
 
+    #[Route(path: '/login', method: 'POST')]
     public function authenticate(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
