@@ -13,6 +13,9 @@ use VerteXVaaR\BlueSprints\Environment\Paths;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;
+use function file_get_contents;
+use function getenv;
+use function json_decode;
 
 readonly class AuthenticationMiddleware implements MiddlewareInterface
 {
@@ -28,14 +31,14 @@ readonly class AuthenticationMiddleware implements MiddlewareInterface
         $username = null;
 
         $cookies = $request->getCookieParams();
-        $cookieAuthName = $this->config->cookieAuthName ?: 'bluedist_auth';
+        $cookieAuthName = $this->config->cookieAuthName ?: 'bluesprints_auth';
         $authCookie = $cookies[$cookieAuthName] ?? null;
 
         if (null !== $authCookie) {
-            $authPath = concat_paths($this->paths->database, 'auth');
+            $authPath = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->database, 'auth');
             $cookieFile = concat_paths($authPath, $authCookie);
             if (file_exists($cookieFile)) {
-                $sessionValues = require $cookieFile;
+                $sessionValues = json_decode(file_get_contents($cookieFile), true);
                 if ($sessionValues['authenticated'] ?? false) {
                     $authenticated = true;
                     $username = $sessionValues['username'] ?? null;
@@ -45,6 +48,7 @@ readonly class AuthenticationMiddleware implements MiddlewareInterface
 
         $request = $request->withAttribute('authenticated', $authenticated);
         $request = $request->withAttribute('username', $username);
+        $request = $request->withAttribute('session', $authCookie);
 
         return $handler->handle($request);
     }
