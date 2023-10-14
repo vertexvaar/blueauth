@@ -38,7 +38,7 @@ readonly class AuthenticationMiddleware implements MiddlewareInterface
             $authPath = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->database, 'auth');
             $cookieFile = concat_paths($authPath, $authCookie);
             if (file_exists($cookieFile)) {
-                $sessionValues = json_decode(file_get_contents($cookieFile), true);
+                $sessionValues = json_decode(file_get_contents($cookieFile), true, 512, JSON_THROW_ON_ERROR);
                 if ($sessionValues['authenticated'] ?? false) {
                     $authenticated = true;
                     $username = $sessionValues['username'] ?? null;

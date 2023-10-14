@@ -6,14 +6,14 @@ namespace VerteXVaaR\BlueAuth\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use Twig\Environment;
 use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 use VerteXVaaR\BlueSprints\Mvc\Repository;
-use VerteXVaaR\BlueSprints\Routing\Attrbiutes\Route;
-use VerteXVaaR\BlueSprints\Utility\Strings;
+use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
 
 use function array_key_exists;
 use function CoStack\Lib\concat_paths;
@@ -31,8 +31,8 @@ class AuthenticationController extends AbstractController
     public function __construct(
         Repository $repository,
         Environment $view,
-        private Paths $paths,
-        private Config $config
+        private readonly Paths $paths,
+        private readonly Config $config
     ) {
         parent::__construct($repository, $view);
     }
@@ -66,7 +66,7 @@ class AuthenticationController extends AbstractController
             $password = $body['password'];
             if ($username === 'admin' && $password === 'password') {
                 $path = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->database, 'auth');
-                $sessionIdentifier = Strings::generateUuid();
+                $sessionIdentifier = Uuid::uuid4()->toString();
                 $session = [
                     'id' => $sessionIdentifier,
                     'username' => $username,
@@ -75,7 +75,7 @@ class AuthenticationController extends AbstractController
                 if (!is_dir($path) && !mkdir($path, $this->config->folderPermissions, true) && !is_dir($path)) {
                     throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
                 }
-                file_put_contents(concat_paths($path, $sessionIdentifier), json_encode($session));
+                file_put_contents(concat_paths($path, $sessionIdentifier), json_encode($session, JSON_THROW_ON_ERROR));
                 setcookie($this->config->cookieAuthName ?: 'bluesprints_auth', $sessionIdentifier);
                 return $this->redirect('/');
             }
