@@ -19,5 +19,10 @@
   "require": {
     "php": "8.2.*",
     "vertexvaar/bluesprints": "*"
+  },
+  "extra": {
+    "vertexvaar/bluesprints": {
+      "view": "view"
+    }
   }
 }
