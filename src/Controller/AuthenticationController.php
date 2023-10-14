@@ -11,8 +11,8 @@ use RuntimeException;
 use Twig\Environment;
 use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Environment\Paths;
-use VerteXVaaR\BlueSprints\Mvc\AbstractController;
-use VerteXVaaR\BlueSprints\Mvc\Repository;
+use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
+use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
 
 use function array_key_exists;
