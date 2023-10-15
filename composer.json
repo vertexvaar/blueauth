@@ -27,6 +27,9 @@
     "vertexvaar/bluesprints": {
       "view": "view",
       "config": "config"
+    },
+    "vertexvaar/blueconsole": {
+      "config": "config"
     }
   }
 }
