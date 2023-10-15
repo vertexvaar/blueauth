@@ -7,7 +7,6 @@ namespace VerteXVaaR\BlueAuth\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment as View;
-use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
