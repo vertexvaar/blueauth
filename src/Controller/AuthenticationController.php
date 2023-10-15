@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueAuth\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Twig\Environment;
+use Twig\Environment as View;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
@@ -19,7 +19,7 @@ class AuthenticationController extends AbstractController
 {
     public function __construct(
         Repository $repository,
-        Environment $view,
+        View $view,
         private readonly AuthenticationService $authenticationService,
     ) {
         parent::__construct($repository, $view);

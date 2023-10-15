@@ -2,10 +2,13 @@
 
 namespace PHPSTORM_META {
 
+    use Psr\Http\Message\ServerRequestInterface;
+    use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
+
     override(
-        \Psr\Http\Message\ServerRequestInterface::getAttribute(),
+        ServerRequestInterface::getAttribute(),
         map([
-            'session' => \VerteXVaaR\BlueAuth\Mvcr\Model\Session::class
+            'session' => Session::class
         ])
     );
 }
