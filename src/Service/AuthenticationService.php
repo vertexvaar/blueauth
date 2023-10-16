@@ -26,7 +26,7 @@ readonly class AuthenticationService
     public function authorize(
         Session $session,
         string $username,
-        #[SensitiveParameter] string $password
+        #[SensitiveParameter] string $password,
     ): void {
         // If there is a session for another user, delete the session first.
         if (!in_array($session->getUsername(), [null, $username], true)) {
@@ -61,18 +61,29 @@ readonly class AuthenticationService
         }
 
         $session = $this->repository->findByIdentifier(Session::class, $sessionIdentifier);
-        if (null === $session || null === $session->getUsername()) {
+        if (null === $session) {
             return new Session(Uuid::uuid4()->toString());
         }
 
-        $user = $this->repository->findByIdentifier(User::class, $session->getUsername());
-        if (null === $user) {
-            // Destroy session if user does not exist (anymore)
-            $this->logout($session);
-            // Create new session with new identifier
-            return new Session(Uuid::uuid4()->toString());
-        }
+        return $session;
+    }
 
+    public function forcePersistentSession(ServerRequestInterface $request): Session
+    {
+        $session = $request->getAttribute('session');
+        if (null === $session) {
+            $sessionIdentifier = $request->getCookieParams()[$this->config->cookieAuthName] ?? null;
+            if (null === $sessionIdentifier) {
+                $session = new Session(Uuid::uuid4()->toString());
+            } else {
+                $session = $this->repository->findByIdentifier(Session::class, $sessionIdentifier);
+                if (null === $session) {
+                    $session = new Session(Uuid::uuid4()->toString());
+                }
+            }
+        }
+        $this->repository->persist($session);
+        setcookie($this->config->cookieAuthName, $session->identifier);
         return $session;
     }
 }
