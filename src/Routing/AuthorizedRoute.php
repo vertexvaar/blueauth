@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueAuth\Routing;
 
-use VerteXVaaR\BlueSprints\Routing\Route;
+use VerteXVaaR\BlueWeb\Routing\Route;
 
 readonly class AuthorizedRoute extends Route
 {

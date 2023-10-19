@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueAuth\Routing\Attributes;
 
 use Attribute;
-use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 readonly class AuthorizedRoute extends Route

@@ -18,7 +18,7 @@ use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
 use VerteXVaaR\BlueAuth\Routing\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Cache\Cache;
-use VerteXVaaR\BlueSprints\Routing\Route;
+use VerteXVaaR\BlueWeb\Routing\Route;
 
 use function serialize;
 use function unserialize;

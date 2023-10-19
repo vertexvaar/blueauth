@@ -18,18 +18,14 @@
   },
   "require": {
     "php": "8.2.*",
-    "vertexvaar/bluesprints": "*"
+    "vertexvaar/blueweb": "*"
   },
   "extra": {
-    "vertexvaar/bluecontainer": {
-      "svc": "svc"
-    },
     "vertexvaar/bluesprints": {
+      "services": "svc",
       "view": "view",
-      "config": "config"
-    },
-    "vertexvaar/blueconsole": {
-      "config": "config"
+      "middlewares": "config",
+      "commands": "config"
     }
   }
 }

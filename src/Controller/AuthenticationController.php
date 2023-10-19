@@ -8,9 +8,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
-use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
-use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
+use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_key_exists;
 
@@ -45,7 +45,7 @@ class AuthenticationController extends AbstractController
         return $this->redirect('/');
     }
 
-    #[Route(path: '/login', method: 'POST')]
+    #[Route(path: '/login', method: Route::POST)]
     public function authenticate(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();

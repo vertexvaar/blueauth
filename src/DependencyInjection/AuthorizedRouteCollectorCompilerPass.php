@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueAuth\DependencyInjection;
 
 use Composer\IO\IOInterface;
+use OutOfBoundsException;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
-use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
+use VerteXVaaR\BlueWeb\Routing\Middleware\RoutingMiddleware;
 
 use function array_keys;
 use function array_merge_recursive;
@@ -90,13 +91,13 @@ class AuthorizedRouteCollectorCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition(RoutingMiddleware::class);
         try {
             $routes = $definition->getArgument('$routes');
-        } catch (\OutOfBoundsException $exception) {
+        } catch (OutOfBoundsException $exception) {
             $routes = [];
         }
         $routes = array_merge_recursive($routes, $compiledRoutes);
         $definition->setArgument('$routes', $routes);
 
-        $io->write('Loaded routes from controller attributes', true, IOInterface::VERBOSE);
+        $io->write('Loaded authorized routes from controller attributes', true, IOInterface::VERBOSE);
     }
 
 }
