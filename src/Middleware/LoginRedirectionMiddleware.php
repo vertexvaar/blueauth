@@ -16,9 +16,10 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
-use VerteXVaaR\BlueAuth\Routing\AuthorizedRoute;
+use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
-use VerteXVaaR\BlueWeb\Routing\Route;
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
+use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function serialize;
 use function unserialize;
@@ -52,6 +53,7 @@ class LoginRedirectionMiddleware implements MiddlewareInterface
                         Session::class,
                         Route::class,
                         AuthorizedRoute::class,
+                        RouteEncapsulation::class,
                     ],
                 ]);
                 $this->cache->delete($cacheKey);
@@ -61,6 +63,10 @@ class LoginRedirectionMiddleware implements MiddlewareInterface
             return new Response(303, ['Location' => '/']);
         }
         if ($response->getStatusCode() === 403) {
+            $session = $request->getAttribute('session');
+            if ($session->isAuthenticated()) {
+                return $response;
+            }
             $session = $this->authenticationService->forcePersistentSession($request);
             $cacheKey = 'previousRequest.' . $session->identifier;
             $this->cache->set($cacheKey, serialize($request));

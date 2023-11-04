@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use VerteXVaaR\BlueAuth\Mvcr\Model\User;
-use VerteXVaaR\BlueAuth\Routing\AuthorizedRoute;
+use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
@@ -24,8 +24,9 @@ class AuthorizationMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = $request->getAttribute('route');
-        if ($route instanceof AuthorizedRoute && $route->requireAuthorization) {
+        $routeEncapsulation = $request->getAttribute('route');
+        $route = $routeEncapsulation->route;
+        if ($route instanceof AuthorizedRoute && ($route->requireAuthorization || !empty($route->requiredRoles))) {
             $session = $request->getAttribute('session');
             if (!$session->isAuthenticated()) {
                 return new Response(403, [], 'Authentication required');
@@ -39,7 +40,7 @@ class AuthorizationMiddleware implements MiddlewareInterface
                     return new Response(403, [], 'Session expired');
                 }
                 if (!$user->hasRoles($route->requiredRoles)) {
-                    return new Response(403, [], 'Authentication required');
+                    return new Response(403, [], 'You do not have the required permission to do this action');
                 }
             }
         }
