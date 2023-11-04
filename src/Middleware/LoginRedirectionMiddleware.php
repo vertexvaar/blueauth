@@ -14,10 +14,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\SimpleCache\CacheInterface;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
 use VerteXVaaR\BlueAuth\Routing\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
-use VerteXVaaR\BlueSprints\Cache\Cache;
 use VerteXVaaR\BlueWeb\Routing\Route;
 
 use function serialize;
@@ -26,7 +26,7 @@ use function unserialize;
 class LoginRedirectionMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly Cache $cache,
+        private readonly CacheInterface $cache,
         private readonly AuthenticationService $authenticationService,
     ) {
     }
