@@ -41,7 +41,7 @@ class LoginRedirectionMiddleware implements MiddlewareInterface
             && $response->getStatusCode() === 303
         ) {
             $session = $request->getAttribute('session');
-            $cacheKey = 'previousRequest.' . $session->identifier;
+            $cacheKey = 'previousRequest/' . $session->identifier;
             if ($session->isAuthenticated() && $this->cache->has($cacheKey)) {
                 $previousRequest = unserialize($this->cache->get($cacheKey), [
                     'allowed_classes' => [
@@ -68,7 +68,7 @@ class LoginRedirectionMiddleware implements MiddlewareInterface
                 return $response;
             }
             $session = $this->authenticationService->forcePersistentSession($request);
-            $cacheKey = 'previousRequest.' . $session->identifier;
+            $cacheKey = 'previousRequest/' . $session->identifier;
             $this->cache->set($cacheKey, serialize($request));
             $response = new Response(303, ['Location' => '/login'], 'Login required');
         }
