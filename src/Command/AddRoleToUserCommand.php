@@ -13,7 +13,6 @@ use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 class AddRoleToUserCommand extends Command
 {
-
     public function __construct(private readonly Repository $repository)
     {
         parent::__construct('app:user:addrole');

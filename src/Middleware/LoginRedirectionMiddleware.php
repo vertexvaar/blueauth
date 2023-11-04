@@ -68,5 +68,4 @@ class LoginRedirectionMiddleware implements MiddlewareInterface
         }
         return $response;
     }
-
 }

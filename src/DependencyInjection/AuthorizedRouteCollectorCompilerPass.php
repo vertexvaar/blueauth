@@ -99,5 +99,4 @@ class AuthorizedRouteCollectorCompilerPass implements CompilerPassInterface
 
         $io->write('Loaded authorized routes from controller attributes', true, IOInterface::VERBOSE);
     }
-
 }

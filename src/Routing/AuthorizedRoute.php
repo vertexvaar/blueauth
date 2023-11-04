@@ -18,5 +18,4 @@ readonly class AuthorizedRoute extends Route
     ) {
         parent::__construct($method, $path, $controller, $action);
     }
-
 }
