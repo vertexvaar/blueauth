@@ -24,11 +24,11 @@ use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 use function serialize;
 use function unserialize;
 
-class LoginRedirectionMiddleware implements MiddlewareInterface
+readonly class LoginRedirectionMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly CacheInterface $cache,
-        private readonly AuthenticationService $authenticationService,
+        private CacheInterface $cache,
+        private AuthenticationService $authenticationService,
     ) {
     }
 

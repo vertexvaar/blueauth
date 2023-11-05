@@ -61,11 +61,7 @@ readonly class AuthenticationService
         }
 
         $session = $this->repository->findByIdentifier(Session::class, $sessionIdentifier);
-        if (null === $session) {
-            return new Session(Uuid::uuid4()->toString());
-        }
-
-        return $session;
+        return $session ?? new Session(Uuid::uuid4()->toString());
     }
 
     public function forcePersistentSession(ServerRequestInterface $request): Session

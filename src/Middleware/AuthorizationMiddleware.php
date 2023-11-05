@@ -14,11 +14,11 @@ use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
-class AuthorizationMiddleware implements MiddlewareInterface
+readonly class AuthorizationMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly Repository $repository,
-        private readonly AuthenticationService $authenticationService,
+        private Repository $repository,
+        private AuthenticationService $authenticationService,
     ) {
     }
 
