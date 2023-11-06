@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 use SensitiveParameter;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
 use VerteXVaaR\BlueAuth\Mvcr\Model\User;
-use VerteXVaaR\BlueSprints\Environment\Config;
+use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 use function in_array;
@@ -41,7 +41,7 @@ readonly class AuthenticationService
         }
         if (password_verify($password, $user->hashedPassword)) {
             $session->authenticate($username);
-            setcookie($this->config->cookieAuthName, $session->identifier);
+            setcookie($this->config->get('auth.cookieAuthName'), $session->identifier);
             $this->repository->persist($session);
         }
     }
@@ -49,13 +49,13 @@ readonly class AuthenticationService
     public function logout(Session $session): void
     {
         $session->unauthenticate();
-        setcookie($this->config->cookieAuthName, '', -1, '/');
+        setcookie($this->config->get('auth.cookieAuthName'), '', -1, '/');
         $this->repository->delete($session);
     }
 
     public function loadSessionFromRequest(ServerRequestInterface $request): Session
     {
-        $sessionIdentifier = $request->getCookieParams()[$this->config->cookieAuthName] ?? null;
+        $sessionIdentifier = $request->getCookieParams()[$this->config->get('auth.cookieAuthName')] ?? null;
         if (null === $sessionIdentifier) {
             return new Session(Uuid::uuid4()->toString());
         }
@@ -68,7 +68,7 @@ readonly class AuthenticationService
     {
         $session = $request->getAttribute('session');
         if (null === $session) {
-            $sessionIdentifier = $request->getCookieParams()[$this->config->cookieAuthName] ?? null;
+            $sessionIdentifier = $request->getCookieParams()[$this->config->get('auth.cookieAuthName')] ?? null;
             if (null === $sessionIdentifier) {
                 $session = new Session(Uuid::uuid4()->toString());
             } else {
@@ -79,7 +79,7 @@ readonly class AuthenticationService
             }
         }
         $this->repository->persist($session);
-        setcookie($this->config->cookieAuthName, $session->identifier);
+        setcookie($this->config->get('auth.cookieAuthName'), $session->identifier);
         return $session;
     }
 }
