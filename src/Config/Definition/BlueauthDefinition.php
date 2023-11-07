@@ -9,7 +9,7 @@ use VerteXVaaR\BlueConfig\Structure\Node;
 use VerteXVaaR\BlueConfig\Structure\ObjectNode;
 use VerteXVaaR\BlueConfig\Structure\StringNode;
 
-class BlueauthDefinition implements Definition
+readonly class BlueauthDefinition implements Definition
 {
     public function get(): Node
     {
